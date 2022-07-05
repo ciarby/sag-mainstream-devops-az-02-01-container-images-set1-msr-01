@@ -58,6 +58,14 @@ jobs:
     - script: ./03.prepareAgentMachine.sh
       displayName: 'System software preparation'
 
+    # assure installation binaries
+    - script: ./04.assureInstallBinaries.sh
+      displayName: 'Assure installation binaries'
+    
+    # Boostrap Update Manager
+    - script: ./05.installSUM.sh
+      displayName: 'Install SUM'
+
     # Save audit on share 
     # HINT: ou should use this step only for debug purposes
     # HINT: without this step the mount may be readonly
