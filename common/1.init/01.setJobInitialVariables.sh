@@ -1,11 +1,8 @@
 #!/bin/bash
 
-# Set Job Variables
+# Set Job Common Variables
 
 echo 'Computing initial local variables for job'
-
-JOB_SUIF_TEMPLATE="MSR/1011/lean"
-echo "##vso[task.setvariable variable=JOB_SUIF_TEMPLATE;]${JOB_SUIF_TEMPLATE}"
 
 JOB_DATE=$(date +%y-%m-%d)
 echo "##vso[task.setvariable variable=JOB_DATE;]${JOB_DATE}"

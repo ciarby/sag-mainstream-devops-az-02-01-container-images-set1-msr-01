@@ -1,1 +1,3 @@
-# sag-mainstream-devops-az-02-01-container-images-set1
+# Software AG Mainstream DevOps with Azure - Container Images Set1
+
+TODO: the common contents may be groupped in a template

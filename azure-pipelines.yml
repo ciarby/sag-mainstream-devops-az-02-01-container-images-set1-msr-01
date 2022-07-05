@@ -17,6 +17,15 @@ jobs:
   displayName: 'MSR 10.11 lean original approach'
   steps:
 
+    # In general the provided code is reusable and will be templatized when mature enough
+    # Write here the job specific parameters for now
+    # This job is specialized for MSR/1011/lean
+    - script: |
+        JOB_SUIF_TEMPLATE="MSR/1011/lean"
+        echo "Job will use SUIF template ${JOB_SUIF_TEMPLATE}"
+        echo "##vso[task.setvariable variable=JOB_SUIF_TEMPLATE;]${JOB_SUIF_TEMPLATE}"
+      displayName: "Init Specifics"
+
     # grant execution permissions to the repository scripts
     - script: find . -type f -name "*.sh" -exec chmod u+x "{}" \;
       displayName: "Grant shell execution permissions"
@@ -26,10 +35,10 @@ jobs:
         export JOB_SUIF_TAG=$(SUIF_TAG)
         export SUIF_FIXES_DATE_TAG=$(SUIF_FIXES_DATE_TAG)
         export MY_AZ_ACR_URL=$(MY_AZ_ACR_URL)
-        ./00.setJobInitialVariables.sh
+        ./common/1.init/01.setJobInitialVariables.sh
       displayName: 'Job Locals'
     
-    - script: ./01.getSUIF.sh
+    - script: ./common/1.init/01.getSUIF.sh
       displayName: "Get SUIF commons"
 
     # get SA share secrets
@@ -40,19 +49,19 @@ jobs:
         secureFile: 'sa.share.secrets.sh'
 
     # mount SA share
-    - script: ./02.mountImagesShare.sh
+    - script: ./common/1.init/02.mountImagesShare.sh
       displayName: 'Mount images share'
 
     # update ubuntu machine
-    - script: ./03.prepareAgentMachine.sh
+    - script: ./common/1.init/03.prepareAgentMachine.sh
       displayName: 'System software preparation'
 
     # assure installation binaries
-    - script: ./04.assureInstallBinaries.sh
+    - script: ./common/2.getInput/04.assureInstallBinaries.sh
       displayName: 'Assure installation binaries'
     
     # Boostrap Update Manager
-    - script: ./05.installSUM.sh
+    - script: ./common/3.build/05.installSUM.sh
       displayName: 'Install SUM'
 
     # MSR license is required at build time
@@ -62,20 +71,31 @@ jobs:
       inputs:
         secureFile: 'msr-license.xml'
 
-    # Save audit on share 
-    # HINT: ou should use this step only for debug purposes
-    # HINT: without this step the mount may be readonly
-    - script: ./11.saveAudit.sh
-      displayName: 'Save Audit on Share'
-      condition: always()
-
     # Setup MSR 10.11 lean
-    - script: ./msr/1011/lean/06.install.sh
+    - script: ./specific/originalStyle/msr/1011/lean/01.install.sh
       displayName: 'Install MSR'
 
     # Containerize
-    - script: ./msr/1011/lean/original/07.containerize.sh
+    - script: ./specific/originalStyle/msr/1011/lean/02.containerize.sh
       displayName: 'Containerize MSR'
+
+    # Service Principal is required to connect to ACR
+    - task: DownloadSecureFile@1
+      name: acrSpCredentials
+      displayName: 'Download Service Principal Credentials'
+      inputs:
+        secureFile: 'acr.sp.credentials.sh'
+
+    # Containerize
+    - script: ./common/5.pushOutput/01.pushTags.sh
+      displayName: 'Push tags'
+
+    # Save audit on share 
+    # HINT: ou should use this step only for debug purposes
+    # HINT: without this step the mount may be readonly
+    - script: ./common/6.finalize/01.saveAudit.sh
+      displayName: 'Save Audit on Share'
+      condition: always()
 
     # umount SA share
     - script: ./12.unmountShare.sh
