@@ -14,7 +14,7 @@ variables:
 jobs:
 
 - job: msr1011leanOriginalApproach
-  displayName: 'MSR 10.11 lean original Approach'
+  displayName: 'MSR 10.11 lean original approach'
   steps:
 
     # Some variables must be propagated accross steps
@@ -42,3 +42,26 @@ jobs:
     
     - script: ./01.getSUIF.sh
       displayName: "Get SUIF commons"
+
+    # get SA share secrets
+    - task: DownloadSecureFile@1
+      name: SASecureInfo
+      displayName: 'Download secure information for images share'
+      inputs: 
+        secureFile: 'sa.share.secrets.sh'
+
+    # mount SA share
+    - script: ./02.mountImagesShare.sh
+      displayName: 'Mount images share'
+
+    # Save audit on share 
+    # HINT: ou should use this step only for debug purposes
+    # HINT: without this step the mount may be readonly
+    - script: ./11.saveAudit.sh
+      displayName: 'Save Audit on Share'
+      condition: always()
+
+    # umount SA share
+    - script: ./12.unmountShare.sh
+      displayName: 'Unmount images share'
+      condition: always()
