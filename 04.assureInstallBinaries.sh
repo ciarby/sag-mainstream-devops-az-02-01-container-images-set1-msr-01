@@ -44,18 +44,18 @@ fi
 # determine the FIXES TAG
 
 if [[ "${SUIF_FIXES_DATE_TAG}" == "latest" ]]; then
-  SUIF_FIXES_DATE_TAG=$(ls -t "${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${JOB_SUIF_TEMPLATE}" | head -1)
+  SUIF_FIXES_DATE_TAG=$(ls -t "${SUIF_FIX_IMAGES_SHARED_DIRECTORY}/${JOB_SUIF_TEMPLATE}" | head -1)
   echo "##vso[task.setvariable variable=SUIF_FIXES_DATE_TAG;]${SUIF_FIXES_DATE_TAG}"
   export SUIF_FIXES_DATE_TAG
 fi
 
 if [ "${SUIF_PATCH_AVAILABLE}" -eq 1 ]; then
-  if [ ! -f "${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip" ]; then
-    logE "File ${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip does not exist, cannot continue!"
+  if [ ! -f "${SUIF_FIX_IMAGES_SHARED_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip" ]; then
+    logE "File ${SUIF_FIX_IMAGES_SHARED_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip does not exist, cannot continue!"
     exit 2
   fi
   logI "Copying patch zip image from the share"
-  cp "${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip" "${SUIF_PATCH_FIXES_IMAGE_FILE}"
+  cp "${SUIF_FIX_IMAGES_SHARED_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip" "${SUIF_PATCH_FIXES_IMAGE_FILE}"
   logI "Patch zip image copied"
 fi
 
