@@ -23,6 +23,7 @@ export SUIF_DEBUG_ON=${SUIF_DEBUG_ON:-0} # Expect this to be a pipeline paramete
 export SUIF_FIX_IMAGES_SHARED_DIRECTORY="$MY_sd/fixes"
 export SUIF_HOME_URL="https://raw.githubusercontent.com/SoftwareAG/sag-unattented-installations/${JOB_SUIF_TAG}"
 export SUIF_INSTALL_IMAGE_FILE="/tmp/products.zip"
+export SUIF_INSTALL_INSTALL_DIR="/opt/softwareag"
 export SUIF_INSTALL_INSTALLER_BIN="/tmp/installer.bin"
 export SUIF_PATCH_AVAILABLE=1 # we always have patches available, with exception of very small time intervals
 export SUIF_PATCH_FIXES_IMAGE_FILE="/tmp/fixes.zip"

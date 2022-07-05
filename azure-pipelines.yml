@@ -75,7 +75,7 @@ jobs:
 
     # Containerize
     - script: ./msr/1011/lean/original/07.containerize.sh
-      displayName: 'Install MSR'
+      displayName: 'Containerize MSR'
 
     # umount SA share
     - script: ./12.unmountShare.sh
