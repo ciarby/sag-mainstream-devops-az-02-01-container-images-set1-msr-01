@@ -54,6 +54,10 @@ jobs:
     - script: ./02.mountImagesShare.sh
       displayName: 'Mount images share'
 
+    # update ubuntu machine
+    - script: ./03.prepareAgentMachine.sh
+      displayName: 'System software preparation'
+
     # Save audit on share 
     # HINT: ou should use this step only for debug purposes
     # HINT: without this step the mount may be readonly
