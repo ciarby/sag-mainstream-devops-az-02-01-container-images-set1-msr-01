@@ -18,11 +18,15 @@ jobs:
   steps:
 
     # grant execution permissions to the repository scripts
-    - script: chmod u+x ./*.sh
+    - script: find . -type f -name *.sh -exec chmod u+x "{}" \;
       displayName: "Grant shell execution permissions"
 
     # Some variables must be propagated accross steps
-    - script: ./00.setJobInitialVariables.sh
+    - script: |
+        export JOB_SUIF_TAG=$(SUIF_TAG)
+        export SUIF_FIXES_DATE_TAG=$(SUIF_FIXES_DATE_TAG)
+        export MY_AZ_ACR_URL=$(MY_AZ_ACR_URL)
+        ./00.setJobInitialVariables.sh
       displayName: 'Job Locals'
     
     - script: ./01.getSUIF.sh
@@ -51,12 +55,27 @@ jobs:
     - script: ./05.installSUM.sh
       displayName: 'Install SUM'
 
+    # MSR license is required at build time
+    - task: DownloadSecureFile@1
+      name: msrLicense
+      displayName: 'Download MSR license'
+      inputs:
+        secureFile: 'msr-license.xml'
+
     # Save audit on share 
     # HINT: ou should use this step only for debug purposes
     # HINT: without this step the mount may be readonly
     - script: ./11.saveAudit.sh
       displayName: 'Save Audit on Share'
       condition: always()
+
+    # Setup MSR 10.11 lean
+    - script: ./msr/1011/lean/06.install.sh
+      displayName: 'Install MSR'
+
+    # Containerize
+    - script: ./msr/1011/lean/original/07.containerize.sh
+      displayName: 'Install MSR'
 
     # umount SA share
     - script: ./12.unmountShare.sh

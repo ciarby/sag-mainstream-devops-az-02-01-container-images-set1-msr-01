@@ -49,6 +49,8 @@ if [[ "${SUIF_FIXES_DATE_TAG}" == "latest" ]]; then
   export SUIF_FIXES_DATE_TAG
 fi
 
+logI "SUIF fixes date tag is: ${SUIF_FIXES_DATE_TAG}"
+
 if [ "${SUIF_PATCH_AVAILABLE}" -eq 1 ]; then
   if [ ! -f "${SUIF_FIX_IMAGES_SHARED_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip" ]; then
     logE "File ${SUIF_FIX_IMAGES_SHARED_DIRECTORY}/${JOB_SUIF_TEMPLATE}/${SUIF_FIXES_DATE_TAG}/fixes.zip does not exist, cannot continue!"
