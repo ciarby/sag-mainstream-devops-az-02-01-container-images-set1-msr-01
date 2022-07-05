@@ -38,7 +38,7 @@ jobs:
         ./common/1.init/01.setJobInitialVariables.sh
       displayName: 'Job Locals'
     
-    - script: ./common/1.init/01.getSUIF.sh
+    - script: ./common/1.init/02.getSUIF.sh
       displayName: "Get SUIF commons"
 
     # get SA share secrets
@@ -49,19 +49,19 @@ jobs:
         secureFile: 'sa.share.secrets.sh'
 
     # mount SA share
-    - script: ./common/1.init/02.mountImagesShare.sh
+    - script: ./common/1.init/03.mountImagesShare.sh
       displayName: 'Mount images share'
 
     # update ubuntu machine
-    - script: ./common/1.init/03.prepareAgentMachine.sh
+    - script: ./common/1.init/04.prepareAgentMachine.sh
       displayName: 'System software preparation'
 
     # assure installation binaries
-    - script: ./common/2.getInput/04.assureInstallBinaries.sh
+    - script: ./common/2.getInput/01.assureInstallBinaries.sh
       displayName: 'Assure installation binaries'
     
     # Boostrap Update Manager
-    - script: ./common/3.build/05.installSUM.sh
+    - script: ./common/3.build/01.installSUM.sh
       displayName: 'Install SUM'
 
     # MSR license is required at build time
