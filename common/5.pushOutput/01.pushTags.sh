@@ -1,7 +1,7 @@
 #!/bin/bash
 
 . ./setEnv.sh
-. "${SUIF_HOME}/01.scripts/commonFunctions.sh"
+. "${SUIF_CACHE_HOME}/01.scripts/commonFunctions.sh"
 
 logI "Getting service principal credentials..."
 if [ ! -f "${ACRSPCREDENTIALS_SECUREFILEPATH}" ]; then
