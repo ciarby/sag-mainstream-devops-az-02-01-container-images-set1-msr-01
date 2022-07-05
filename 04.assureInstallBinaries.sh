@@ -31,3 +31,33 @@ else
 fi
 chmod u+x "${SUIF_INSTALL_INSTALLER_BIN}"
 chmod u+x "${SUIF_PATCH_SUM_BOOSTSTRAP_BIN}"
+
+# Assure zips too
+
+logI "Assuring zip image files for template ${1}"
+
+if [ ! -f "${SUIF_PRODUCT_IMAGES_SHARED_DIRECTORY}/${1}/products.zip" ]; then
+  logE "File ${SUIF_PRODUCT_IMAGES_SHARED_DIRECTORY}/${1}/products.zip does not exist, cannot continue!"
+  exit 1
+fi
+
+# determine the FIXES TAG
+
+if [[ "${SUIF_FIXES_DATE_TAG}" == "latest" ]]; then
+  export SUIF_FIXES_DATE_TAG=$(ls -t "${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${1}" | head -1)
+  echo "##vso[task.setvariable variable=SUIF_FIXES_DATE_TAG;]${SUIF_FIXES_DATE_TAG}"
+fi
+
+if [ "${SUIF_PATCH_AVAILABLE}" -eq 1 ]; then
+  if [ ! -f "${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${1}/${SUIF_FIXES_DATE_TAG}/fixes.zip" ]; then
+    logE "File ${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${1}/${SUIF_FIXES_DATE_TAG}/fixes.zip does not exist, cannot continue!"
+    exit 2
+  fi
+  logI "Copying patch zip image from the share"
+  cp "${SUIF_FIX_IMAGES_OUTPUT_DIRECTORY}/${1}/${SUIF_FIXES_DATE_TAG}/fixes.zip" "${SUIF_PATCH_FIXES_IMAGE_FILE}"
+  logI "Patch zip image copied"
+fi
+
+logI "Copying installation zip image from the share"
+cp "${SUIF_PRODUCT_IMAGES_SHARED_DIRECTORY}/${1}/products.zip" "${SUIF_INSTALL_IMAGE_FILE}"
+logI "Installation zip image copied"
