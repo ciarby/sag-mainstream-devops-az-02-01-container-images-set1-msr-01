@@ -8,6 +8,9 @@ pool:
   name: WmDevOpsTutorialAgentsPool
   vmImage: Canonical:0001-com-ubuntu-confidential-vm-focal:20_04-lts-gen2:latest
 
+variables:
+  - group: ContainerImagesBuild.Options
+
 jobs:
 
 - job: msr1011leanOriginalApproach
@@ -25,14 +28,17 @@ jobs:
         echo "##vso[task.setvariable variable=JOB_DATE;]${JOB_DATE}"
 
         JOB_DATETIME=$(date +%y-%m-%d'T'%H.%M.%S_%3N)
+        echo "JOB_DATETIME=${JOB_DATETIME}"
         echo "##vso[task.setvariable variable=JOB_DATETIME;]${JOB_DATETIME}"
+
+        JOB_SUIF_TAG=$(SUIF_TAG)
+        JOB_SUIF_TAG=${JOB_SUIF_TAG:-main}
+        echo "##vso[task.setvariable variable=JOB_SUIF_TAG;]${JOB_SUIF_TAG}"
       displayName: 'Job Locals'
 
     # grant execution permissions to the repository scripts
     - script: chmod u+x ./*.sh
       displayName: "Grant shell execution permissions"
     
-    - script: |
-        export JOB_SUIF_TAG='v.0.4.0'
-        ./01.getSUIF.sh
+    - script: ./01.getSUIF.sh
       displayName: "Get SUIF commons"
