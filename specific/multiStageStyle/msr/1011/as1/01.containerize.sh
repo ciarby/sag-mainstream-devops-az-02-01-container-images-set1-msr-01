@@ -31,6 +31,6 @@ logI "Building container"
 buildah \
   --storage-opt mount_program=/usr/bin/fuse-overlayfs \
   --storage-opt ignore_chown_errors=true \
-  bud --format docker -t "${JOB_CONTAINER_MAIN_TAG}"
+  bud --format docker -t "${JOB_CONTAINER_MAIN_TAG}" || exit 3
 
 logI "Container image JOB_CONTAINER_MAIN_TAG built"
