@@ -98,6 +98,6 @@ jobs:
       condition: always()
 
     # umount SA share
-    - script: ./12.unmountShare.sh
+    - script: ./common/6.finalize/02.unmountShare.sh
       displayName: 'Unmount images share'
       condition: always()
