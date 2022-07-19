@@ -24,9 +24,10 @@ fi
 
 echo "Mounting the given file share"
 mkdir -p "$MY_sd"
-sudo mount -t cifs "$SAG_AZ_SMB_PATH" "$MY_sd" -o "vers=3.0,username=$SAG_AZ_SA_NAME,password=$SAG_AZ_SA_KEY,dir_mode=0777,file_mode=0777"
+sudo mount -t cifs "${SAG_AZ_SMB_PATH}" "$MY_sd" -o "vers=3.0,username=${SAG_AZ_SA_NAME},password=${SAG_AZ_SM_SHARE_KEY},dir_mode=0777,file_mode=0777"
 resultMount=$?
 if [ $resultMount -ne 0 ]; then
-  logE "Error mounting the images share, result $resultMount"
+  logE "Error mounting the images share, result ${resultMount}"
+  logE "Attempted to mount the SMB path ${SAG_AZ_SMB_PATH} using user ${SAG_AZ_SA_NAME}"
   exit 5
 fi
