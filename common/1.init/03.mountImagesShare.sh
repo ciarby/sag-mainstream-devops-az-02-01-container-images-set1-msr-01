@@ -17,6 +17,11 @@ if [ -z ${SAG_AZ_SA_NAME+x} ]; then
   exit 3
 fi
 
+if [ -z ${SAG_AZ_SA_KEY+x} ]; then
+  logE "Secure information has not been sourced correctly: SAG_AZ_SA_KEY is missing!"
+  exit 6
+fi
+
 if [ -z ${MY_sd+x} ]; then
   logE "Local environment information has not been sourced correctly: MY_sd is missing!"
   exit 4
@@ -24,7 +29,7 @@ fi
 
 echo "Mounting the given file share"
 mkdir -p "$MY_sd"
-sudo mount -t cifs "${SAG_AZ_SMB_PATH}" "$MY_sd" -o "vers=3.0,username=${SAG_AZ_SA_NAME},password=${SAG_AZ_SM_SHARE_KEY},dir_mode=0777,file_mode=0777"
+sudo mount -t cifs "${SAG_AZ_SMB_PATH}" "$MY_sd" -o "vers=3.0,username=${SAG_AZ_SA_NAME},password=${SAG_AZ_SA_KEY},dir_mode=0777,file_mode=0777"
 resultMount=$?
 if [ $resultMount -ne 0 ]; then
   logE "Error mounting the images share, result ${resultMount}"
