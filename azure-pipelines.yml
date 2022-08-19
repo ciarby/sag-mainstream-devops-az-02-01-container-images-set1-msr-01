@@ -141,8 +141,6 @@ jobs:
     - script: ./common/1.init/03.mountImagesShare.sh
       displayName: 'Mount images share'
 
-
-
     # update ubuntu machine
     - script: ./common/1.init/04.prepareAgentMachine.sh
       displayName: 'System software preparation'
