@@ -137,6 +137,7 @@ jobs:
       inputs: 
         secureFile: 'sa.share.secrets.sh'
 
+
     # mount SA share
     - script: ./common/1.init/03.mountImagesShare.sh
       displayName: 'Mount images share'
